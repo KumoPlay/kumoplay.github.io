@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GameGrid from '../components/GameGrid.astro';
+import GameRow from '../components/GameRow.astro';
+import { getLangFromUrl, useTranslations } from '../i18n';
+import { getHomeSections } from '../lib/games';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const { newGames, comingSoon, allGames } = await getHomeSections();
+---
+
+<BaseLayout title={t('home.title')} fullTitle description={t('site.description')}>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="container hero-inner">
+      <picture class="hero-logo">
+        <source srcset="/brand/kumoplay-icon-dark-bg.svg" media="(prefers-color-scheme: dark)" />
+        <img src="/brand/kumoplay-icon.svg" alt={t('site.logoAlt')} width="184" height="133" fetchpriority="high" />
+      </picture>
+      <h1 id="hero-title">{t('site.name')}</h1>
+      <p class="hero-slogan">{t('site.slogan')}</p>
+      <p class="hero-intro">{t('home.heroIntro')}</p>
+      <a class="button button-primary" href="#all-games">{t('home.heroCta')}</a>
+    </div>
+  </section>
+
+  {
+    newGames.length > 0 && (
+      <GameRow id="new-games" title={t('home.newTitle')} intro={t('home.newIntro')} games={newGames} lang={lang} eager />
+    )
+  }
+
+  {
+    comingSoon.length > 0 && (
+      <GameRow id="coming-soon" title={t('home.soonTitle')} intro={t('home.soonIntro')} games={comingSoon} lang={lang} />
+    )
+  }
+
+  <GameGrid games={allGames} lang={lang} />
+</BaseLayout>

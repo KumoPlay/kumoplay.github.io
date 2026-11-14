@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getLangFromUrl, localizePath, useTranslations } from '../i18n';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<BaseLayout title={t('about.title')} description={t('about.description')}>
+  <article class="container page page-narrow">
+    <h1>{t('about.title')}</h1>
+    <p class="lead">{t('about.lead')}</p>
+    <p>{t('about.intro')}</p>
+
+    <h2>{t('about.nameTitle')}</h2>
+    <p>{t('about.name')}</p>
+    <p class="lead">{t('site.slogan')}</p>
+
+    <h2>{t('about.makeTitle')}</h2>
+    <ul class="style-cards">
+      <li class="chip-quick">
+        <strong>{t('playStyle.quick')}</strong>
+        <p>{t('about.makeQuick')}</p>
+      </li>
+      <li class="chip-endless">
+        <strong>{t('playStyle.endless')}</strong>
+        <p>{t('about.makeEndless')}</p>
+      </li>
+    </ul>
+    <p>{t('about.makeNote')}</p>
+
+    <h2>{t('about.forTitle')}</h2>
+    <p>{t('about.for')}</p>
+
+    <h2>{t('about.helloTitle')}</h2>
+    <p>{t('about.hello')}</p>
+    <p><a href="https://github.com/KumoPlay">{t('about.helloLink')}</a></p>
+
+    <p><a class="button button-primary" href={`${localizePath('/', lang)}#all-games`}>{t('home.heroCta')}</a></p>
+  </article>
+</BaseLayout>

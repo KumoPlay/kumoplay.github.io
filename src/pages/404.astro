@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import GameCard from '../components/GameCard.astro';
+import { getLangFromUrl, localizePath, useTranslations } from '../i18n';
+import { getHomeSections } from '../lib/games';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const { allGames } = await getHomeSections();
+const suggestions = allGames.slice(0, 3);
+---
+
+<BaseLayout title={t('404.title')} description={t('404.description')} noindex>
+  <div class="container">
+    <section class="not-found" aria-labelledby="not-found-title">
+      <picture class="float">
+        <source srcset="/brand/kumoplay-icon-dark-bg.svg" media="(prefers-color-scheme: dark)" />
+        <img src="/brand/kumoplay-icon.svg" alt="" width="160" height="116" />
+      </picture>
+      <h1 id="not-found-title">{t('404.heading')}</h1>
+      <p>{t('404.text')}</p>
+      <a class="button button-primary" href={`${localizePath('/', lang)}#all-games`}>{t('404.cta')}</a>
+    </section>
+
+    {
+      suggestions.length > 0 && (
+        <section class="section" aria-labelledby="suggestions-title">
+          <div class="section-head">
+            <h2 id="suggestions-title">{t('404.suggestions')}</h2>
+          </div>
+          <ul class="game-grid" role="list">
+            {suggestions.map((game) => (
+              <li>
+                <GameCard game={game} lang={lang} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+  </div>
+</BaseLayout>

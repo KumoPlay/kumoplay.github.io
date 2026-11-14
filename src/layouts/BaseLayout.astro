@@ -1,0 +1,107 @@
+---
+/**
+ * The frame around every page: <head> tags (search, share cards, icons, feed), header, footer.
+ */
+import { Font } from 'astro:assets';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { getLangFromUrl, locales, useTranslations } from '../i18n';
+
+export interface ShareImage {
+  /** Root-relative or absolute URL */
+  src: string;
+  width: number;
+  height: number;
+  alt: string;
+}
+
+interface Props {
+  /** Page title. " | KumoPlay" is added automatically unless `fullTitle` is set. */
+  title: string;
+  fullTitle?: boolean;
+  /** One or two sentences for search results and share previews. */
+  description: string;
+  /** Image for share previews. Defaults to the KumoPlay share image. */
+  image?: ShareImage;
+  /** Hide from search engines (used by the 404 page). */
+  noindex?: boolean;
+  /** Structured data for search engines (schema.org). */
+  jsonLd?: Record<string, unknown>;
+}
+
+const { title, fullTitle = false, description, image, noindex = false, jsonLd } = Astro.props;
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const siteName = t('site.name');
+const pageTitle = fullTitle ? title : `${title} | ${siteName}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+
+const share: ShareImage = image ?? {
+  src: '/og-default.png',
+  width: 1200,
+  height: 630,
+  alt: t('site.ogAlt'),
+};
+const shareImageUrl = new URL(share.src, Astro.site).href;
+const feedUrl = new URL('/rss.xml', Astro.site).href;
+
+// "<" is escaped so the JSON can never close the <script> tag early.
+const jsonLdText = jsonLd ? JSON.stringify(jsonLd).replaceAll('<', '\\u003c') : undefined;
+---
+
+<!doctype html>
+<html lang={locales[lang].html}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical.href} />
+    {noindex && <meta name="robots" content="noindex" />}
+
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#FFF8EE" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#2A2546" media="(prefers-color-scheme: dark)" />
+
+    {/* Icons from the KumoPlay logo kit. sizes="32x32" lets browsers prefer the SVG, which has a dark-mode version. */}
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <link rel="alternate" type="application/rss+xml" title={t('rss.title')} href={feedUrl} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    {/* Only the basic Latin file is preloaded; accented letters load on demand. */}
+    <Font cssVariable="--font-nunito" preload={[{ subset: 'latin' }]} />
+
+    {/* Share cards (Facebook, LINE, Discord, iMessage, X and others) */}
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={locales[lang].og} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={shareImageUrl} />
+    <meta property="og:image:width" content={String(share.width)} />
+    <meta property="og:image:height" content={String(share.height)} />
+    <meta property="og:image:alt" content={share.alt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={shareImageUrl} />
+    <meta name="twitter:image:alt" content={share.alt} />
+
+    {jsonLdText && <script type="application/ld+json" set:html={jsonLdText} />}
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{t('a11y.skipToContent')}</a>
+    <Header lang={lang} />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+  </body>
+</html>

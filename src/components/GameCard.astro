@@ -1,0 +1,73 @@
+---
+/**
+ * One game as a card: cover, title, tagline, play style and session length.
+ * The whole card is clickable; screen readers hear the title as the link.
+ */
+import { Picture } from 'astro:assets';
+import { formatDate, localizePath, useTranslations, type Lang } from '../i18n';
+import { isNew, isPlayable, type Game } from '../lib/games';
+import Icon from './Icon.astro';
+
+interface Props {
+  game: Game;
+  lang: Lang;
+  /** Heading level for the title, so the page outline stays correct. */
+  headingLevel?: 'h2' | 'h3';
+  /** Load the cover right away (for cards near the top of the page). */
+  eager?: boolean;
+}
+
+const { game, lang, headingLevel = 'h3', eager = false } = Astro.props;
+const t = useTranslations(lang);
+const { title, tagline, cover, playStyle, sessionLength, releaseDate } = game.data;
+
+const href = localizePath(`/games/${game.data.slug}/`, lang);
+const playable = isPlayable(game);
+const fresh = isNew(game);
+const Heading = headingLevel;
+---
+
+<article class="game-card">
+  <div class="card-cover">
+    {/* The title below already names the game, so the cover is decorative here. */}
+    <Picture
+      src={cover}
+      alt=""
+      formats={['avif', 'webp']}
+      widths={[400, 640, 960]}
+      sizes="(min-width: 64rem) 22rem, (min-width: 40rem) 45vw, 85vw"
+      loading={eager ? 'eager' : 'lazy'}
+    />
+  </div>
+  <div class="card-body">
+    <Heading class="card-title"><a class="card-link" href={href}>{title}</a></Heading>
+    {
+      (fresh || !playable) && (
+        <p class="card-badges">
+          {fresh && <span class="badge">{t('badge.new')}</span>}
+          {!playable && <span class="badge badge-soon">{t('badge.comingSoon')}</span>}
+        </p>
+      )
+    }
+    <p class="card-tagline">{tagline}</p>
+    <ul class="chips">
+      <li class={`chip chip-${playStyle}`}>
+        <span class="visually-hidden">{t('game.playStyle')}:</span>
+        {t(`playStyle.${playStyle}`)}
+      </li>
+      <li class="chip">
+        <Icon name="clock" />
+        <span class="visually-hidden">{t('game.session')}:</span>
+        {sessionLength}
+      </li>
+      {
+        !playable && releaseDate && (
+          <li class="chip">
+            <Icon name="calendar" />
+            {t('game.comingOn', { date: formatDate(releaseDate, lang, 'short') })}
+          </li>
+        )
+      }
+    </ul>
+  </div>
+</article>

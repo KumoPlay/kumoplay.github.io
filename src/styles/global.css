@@ -1,0 +1,1017 @@
+/* ==========================================================================
+   KumoPlay global styles
+   --------------------------------------------------------------------------
+   Brand colors come straight from the logo kit. Every other shade is mixed
+   from them; each note says how, plus its contrast ratio. Text needs at least
+   4.5:1 (WCAG AA); focus rings and other UI shapes need at least 3:1.
+   ========================================================================== */
+
+:root {
+  /* Brand colors (from the logo) */
+  --kumo-lavender: #9f88e6; /* cloud on light. Decoration only (2.9:1 on white) */
+  --kumo-lilac: #c8b8f0; /* cloud on dark */
+  --kumo-petal: #fde3ec; /* icon tile */
+  --kumo-candy: #f07ba8; /* button */
+  --kumo-sky: #4ea3ea; /* button */
+  --kumo-violet: #7c63d6; /* "Play" on light */
+  --kumo-plum: #3d3566; /* text */
+  --kumo-night: #2a2546; /* dark ground */
+  --kumo-cream: #fff8ee; /* text on dark */
+
+  /* Light theme */
+  --color-bg: var(--kumo-cream);
+  --color-surface: #ffffff;
+  --color-surface-soft: #f1edfb; /* Lavender 15% on white */
+  --color-hero: var(--kumo-petal);
+  --color-hero-deco: rgb(255 255 255 / 0.6);
+  --color-text: var(--kumo-plum); /* 10.5:1 on Cream, 9.2:1 on Petal */
+  --color-text-muted: #645c81; /* Plum mixed 20% toward Cream: 5.0:1 or more on every light surface */
+  --color-link: #6c58ba; /* Violet mixed 25% toward Plum: 5.3:1 on Cream (Violet itself is only 4.3:1) */
+  --color-focus: var(--kumo-violet); /* 4.3:1 on Cream */
+  --color-border: #ddd5f6; /* Lavender 35% on white. Decoration only */
+  --color-chip-quick: #d8ebfa; /* Sky 22% on white. Plum text 9.1:1 */
+  --color-chip-endless: #eae5fa; /* Lavender 22% on white. Plum text 9.0:1 */
+  --color-chip-text: var(--kumo-plum);
+  --color-accent: var(--kumo-candy); /* Play button and "New" badge */
+  --color-accent-hover: #f28fb5; /* Candy mixed 15% toward white */
+  --color-on-accent: var(--kumo-night); /* 5.6:1 on Candy (white text would be only 2.6:1) */
+  --color-soon: var(--kumo-lilac);
+  --color-on-soon: var(--kumo-night); /* 8.0:1 */
+  --color-selected: var(--kumo-plum);
+  --color-on-selected: var(--kumo-cream); /* 10.5:1 */
+  --shadow-rgb: 61 53 102; /* Plum */
+  --shadow-alpha: 0.1;
+
+  /* Shapes and spacing */
+  --radius-card: 1.5rem;
+  --radius-pill: 999px;
+  --gutter: 1rem;
+  --page-max: 72rem;
+
+  color-scheme: light dark;
+}
+
+/* Dark theme: follows the device setting */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: var(--kumo-night);
+    --color-surface: #373154; /* Night + 8% Lilac. Cream text 11.5:1 */
+    --color-surface-soft: #403a5e; /* Night + 14% Lilac. Cream text 10.0:1 */
+    --color-hero: #3f3763; /* Night + 18% Lavender. Cream text 10.3:1 */
+    --color-hero-deco: rgb(200 184 240 / 0.08);
+    --color-text: var(--kumo-cream); /* 13.7:1 on Night */
+    --color-text-muted: #bfb4cd; /* Cream and Lilac mixed evenly, then 20% toward Night: 5.3:1 or more on dark surfaces */
+    --color-link: var(--kumo-lilac); /* 8.0:1 on Night */
+    --color-focus: var(--kumo-lilac);
+    --color-border: #4f4776; /* decoration only */
+    --color-chip-quick: #37517f; /* Night + 35% Sky. Cream text 7.5:1 */
+    --color-chip-endless: #594d86; /* Night + 40% Lavender. Cream text 7.0:1 */
+    --color-chip-text: var(--kumo-cream);
+    --color-selected: var(--kumo-cream);
+    --color-on-selected: var(--kumo-night); /* 13.7:1 */
+    --shadow-rgb: 12 10 28;
+    --shadow-alpha: 0.35;
+  }
+}
+
+/* ----- Base ------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-nunito), ui-rounded, system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+main {
+  flex: 1;
+}
+
+main:focus {
+  outline: none;
+}
+
+img,
+picture,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0 0 0.5em;
+  line-height: 1.2;
+  font-weight: 850;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0 0 1em;
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--color-link);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
+a:hover {
+  text-decoration-thickness: 0.15em;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: 0.4rem;
+}
+
+/* ----- Helpers ---------------------------------------------------------- */
+
+.container {
+  width: min(100% - 2 * var(--gutter), var(--page-max));
+  margin-inline: auto;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: -10rem;
+  left: var(--gutter);
+  z-index: 100;
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-weight: 800;
+  box-shadow: 0 6px 20px rgb(var(--shadow-rgb) / 0.25);
+}
+
+.skip-link:focus {
+  top: var(--gutter);
+}
+
+.icon {
+  width: 1.1em;
+  height: 1.1em;
+  flex: none;
+}
+
+/* ----- Buttons ---------------------------------------------------------- */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 3rem;
+  padding: 0.75rem 1.6rem;
+  border: 0;
+  border-radius: var(--radius-pill);
+  font: inherit;
+  font-size: 1.05rem;
+  font-weight: 850;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button-primary {
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  box-shadow: 0 6px 16px rgb(var(--shadow-rgb) / calc(var(--shadow-alpha) * 1.5));
+}
+
+.button-primary:hover {
+  background: var(--color-accent-hover);
+}
+
+.button-secondary {
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: inset 0 0 0 2px var(--color-border);
+}
+
+.button-secondary:hover {
+  background: var(--color-surface-soft);
+}
+
+/* ----- Header ----------------------------------------------------------- */
+
+.site-header {
+  padding-block: 0.6rem;
+}
+
+.header-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 44px;
+  color: var(--color-text);
+  font-size: 1.35rem;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+
+.brand img {
+  width: 2.75rem;
+}
+
+.site-nav ul {
+  display: flex;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: 0.9rem;
+  border-radius: var(--radius-pill);
+  color: var(--color-text);
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.site-nav a:hover {
+  background: var(--color-surface-soft);
+}
+
+/* Very small phones: keep the logo and menu on one line */
+@media (max-width: 22rem) {
+  .header-inner {
+    gap: 0.25rem 0.5rem;
+  }
+
+  .brand {
+    gap: 0.4rem;
+    font-size: 1.15rem;
+  }
+
+  .brand img {
+    width: 2.25rem;
+  }
+
+  .site-nav a {
+    padding-inline: 0.6rem;
+  }
+}
+
+.site-nav a[aria-current='page'] {
+  background: var(--color-surface-soft);
+  text-decoration: underline;
+  text-decoration-color: var(--kumo-candy);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 0.35em;
+}
+
+/* ----- Hero (home page) ------------------------------------------------- */
+
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  padding-block: 2.25rem 2.75rem;
+  border-radius: 0 0 2.5rem 2.5rem;
+  background: var(--color-hero);
+}
+
+/* Two soft cloud puffs in the corners */
+.hero::before,
+.hero::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  background: var(--color-hero-deco);
+}
+
+.hero::before {
+  width: 15rem;
+  height: 15rem;
+  top: -6rem;
+  right: -5rem;
+  box-shadow: -6rem 3rem 0 -3rem var(--color-hero-deco);
+}
+
+.hero::after {
+  width: 11rem;
+  height: 11rem;
+  bottom: -5rem;
+  left: -4rem;
+  box-shadow: 5rem 1.5rem 0 -2.5rem var(--color-hero-deco);
+}
+
+.hero-inner {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
+.hero-logo {
+  width: clamp(8rem, 34vw, 11.5rem);
+  margin-bottom: 0.75rem;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: clamp(2.5rem, 10vw, 4rem);
+  font-weight: 900;
+}
+
+.hero-slogan {
+  margin: 0.15rem 0 0.75rem;
+  font-size: clamp(1.15rem, 4.2vw, 1.5rem);
+  font-weight: 750;
+}
+
+.hero-intro {
+  max-width: 34rem;
+  margin-bottom: 1.5rem;
+  color: var(--color-text-muted);
+}
+
+/* ----- Sections --------------------------------------------------------- */
+
+.section {
+  padding-top: 2rem;
+}
+
+.section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.15rem 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.section-head h2 {
+  margin: 0;
+  font-size: clamp(1.5rem, 5.5vw, 2rem);
+}
+
+.section-head p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-weight: 650;
+}
+
+/* ----- Swipeable rows (New games, Coming soon) -------------------------- */
+
+/* Note: card lists use role="list" in the HTML on purpose. Safari's VoiceOver stops
+   announcing lists that have list-style: none, and the role brings that back. */
+
+.game-row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: min(82%, 19rem);
+  gap: 1rem;
+  margin: 0;
+  padding: 0.5rem max(var(--gutter), (100% - var(--page-max)) / 2) 1.25rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: max(var(--gutter), (100% - var(--page-max)) / 2);
+  list-style: none;
+  scrollbar-width: thin;
+}
+
+.game-row > li {
+  display: flex;
+  scroll-snap-align: start;
+}
+
+@media (min-width: 64rem) {
+  .game-row {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+    overflow: visible;
+  }
+}
+
+/* ----- Game grid with filter -------------------------------------------- */
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0.25rem 0 0;
+  list-style: none;
+}
+
+.game-grid > li {
+  display: flex;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 0.5rem;
+  padding: 0;
+  border: 0;
+}
+
+/* The real radio button stays in the page for keyboards and screen readers; the label is the visible pill. */
+.filter-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 44px;
+  padding-inline: 0.9rem;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  font-weight: 800;
+  cursor: pointer;
+  user-select: none;
+}
+
+.filter-pill:hover {
+  background: var(--color-surface-soft);
+}
+
+.filter-count {
+  font-weight: 600;
+}
+
+.filter-input:checked + .filter-pill {
+  border-color: var(--color-selected);
+  background: var(--color-selected);
+  color: var(--color-on-selected);
+}
+
+/* A check mark, so the selected filter doesn't rely on color alone */
+.filter-input:checked + .filter-pill::before {
+  content: '✓';
+  font-weight: 900;
+}
+
+.filter-input:focus-visible + .filter-pill {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.filter-help {
+  margin-bottom: 1.25rem;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
+
+.filterable:has(#filter-quick:checked) .game-grid > li:not([data-style='quick']),
+.filterable:has(#filter-endless:checked) .game-grid > li:not([data-style='endless']) {
+  display: none;
+}
+
+.filter-empty {
+  display: none;
+  padding: 1.5rem;
+  border-radius: var(--radius-card);
+  background: var(--color-surface-soft);
+  font-weight: 700;
+  text-align: center;
+}
+
+.filterable:has(#filter-quick:checked) .filter-empty[data-for='quick'],
+.filterable:has(#filter-endless:checked) .filter-empty[data-for='endless'] {
+  display: block;
+}
+
+/* Very old browsers can't filter without JavaScript, so they just see every game. */
+@supports not selector(:has(a)) {
+  .filters,
+  .filter-help {
+    display: none;
+  }
+}
+
+.empty-note {
+  padding: 1.5rem;
+  border-radius: var(--radius-card);
+  background: var(--color-surface-soft);
+  font-weight: 700;
+  text-align: center;
+}
+
+/* ----- Game card -------------------------------------------------------- */
+
+.game-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow:
+    0 1px 2px rgb(var(--shadow-rgb) / var(--shadow-alpha)),
+    0 8px 24px rgb(var(--shadow-rgb) / var(--shadow-alpha));
+}
+
+.card-cover {
+  aspect-ratio: 1200 / 630;
+  overflow: hidden;
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
+  background: var(--color-surface-soft);
+}
+
+.card-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.9rem 1.15rem 1.15rem;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.card-link {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+/* The whole card is clickable, but only the title is read out as the link */
+.card-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-card);
+}
+
+.card-link:focus-visible {
+  outline: none;
+}
+
+.card-link:focus-visible::after {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.game-card:hover .card-link {
+  text-decoration: underline;
+  text-decoration-thickness: 0.1em;
+  text-underline-offset: 0.18em;
+}
+
+.card-tagline {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.98rem;
+  line-height: 1.45;
+}
+
+.card-badges {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  display: flex;
+  gap: 0.4rem;
+  margin: 0;
+}
+
+/* ----- Chips and badges ------------------------------------------------- */
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: auto 0 0;
+  padding: 0.35rem 0 0;
+  list-style: none;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.7rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-soft);
+  color: var(--color-chip-text);
+  font-size: 0.85rem;
+  font-weight: 750;
+}
+
+.chip-quick {
+  background: var(--color-chip-quick);
+}
+
+.chip-endless {
+  background: var(--color-chip-endless);
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.75rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  color: var(--color-on-accent);
+  font-size: 0.82rem;
+  font-weight: 900;
+  box-shadow: 0 2px 8px rgb(var(--shadow-rgb) / 0.2);
+}
+
+.badge-soon {
+  background: var(--color-soon);
+  color: var(--color-on-soon);
+}
+
+/* ----- Game page -------------------------------------------------------- */
+
+.game-page {
+  padding-block: 0.5rem 1rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  margin-bottom: 0.5rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.game-hero {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 56rem) {
+  .game-hero {
+    grid-template-columns: 1.15fr 1fr;
+    align-items: center;
+    gap: 2.5rem;
+  }
+}
+
+.game-cover {
+  aspect-ratio: 1200 / 630;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background: var(--color-surface-soft);
+  box-shadow: 0 10px 30px rgb(var(--shadow-rgb) / var(--shadow-alpha));
+}
+
+.game-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.game-intro .card-badges {
+  position: static;
+  margin-bottom: 0.5rem;
+}
+
+.game-intro h1 {
+  margin: 0 0 0.25rem;
+  font-size: clamp(2.1rem, 8vw, 3.2rem);
+  font-weight: 900;
+}
+
+.game-tagline {
+  margin-bottom: 1.25rem;
+  color: var(--color-text-muted);
+  font-size: 1.2rem;
+  font-weight: 650;
+}
+
+.button-play {
+  width: 100%;
+  min-height: 3.75rem;
+  padding-inline: 2.25rem;
+  font-size: 1.3rem;
+}
+
+@media (min-width: 30rem) {
+  .button-play {
+    width: auto;
+  }
+}
+
+.soon-box {
+  display: inline-flex;
+  flex-direction: column;
+  padding: 0.9rem 1.5rem;
+  border-radius: var(--radius-card);
+  background: var(--color-surface-soft);
+}
+
+.soon-box strong {
+  font-size: 1.2rem;
+  font-weight: 900;
+}
+
+.soon-box span {
+  color: var(--color-text-muted);
+}
+
+.game-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1.5rem 0 0;
+}
+
+.game-facts > div {
+  padding: 0.75rem 1rem;
+  border-radius: 1rem;
+  background: var(--color-surface);
+}
+
+.game-facts dt {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  font-weight: 750;
+}
+
+.game-facts dd {
+  margin: 0;
+  font-weight: 800;
+}
+
+.game-section {
+  max-width: 46rem;
+  margin-top: 2.5rem;
+}
+
+.game-section h2 {
+  font-size: 1.6rem;
+}
+
+.prose h3 {
+  margin-top: 1.5rem;
+  font-size: 1.2rem;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.25rem;
+}
+
+.prose li + li {
+  margin-top: 0.3rem;
+}
+
+.screenshots {
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0.25rem 0.25rem 1rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  list-style: none;
+  scrollbar-width: thin;
+}
+
+.screenshots li {
+  flex: none;
+  scroll-snap-align: start;
+}
+
+.screenshots img {
+  width: auto;
+  height: clamp(16rem, 55vh, 26rem);
+  border-radius: 1.25rem;
+  box-shadow: 0 6px 18px rgb(var(--shadow-rgb) / var(--shadow-alpha));
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.source-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  font-weight: 800;
+}
+
+/* ----- About and simple pages ------------------------------------------- */
+
+.page {
+  padding-block: 1.5rem 1rem;
+}
+
+.page-narrow {
+  max-width: 42rem;
+}
+
+.page h1 {
+  font-size: clamp(2.1rem, 8vw, 3rem);
+  font-weight: 900;
+}
+
+.page h2 {
+  margin-top: 2rem;
+  font-size: 1.5rem;
+}
+
+.lead {
+  font-size: 1.25rem;
+  font-weight: 750;
+}
+
+.style-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: 1rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.style-cards li {
+  padding: 1rem 1.2rem;
+  border-radius: var(--radius-card);
+}
+
+.style-cards .chip-quick,
+.style-cards .chip-endless {
+  color: var(--color-chip-text);
+}
+
+/* ----- 404 -------------------------------------------------------------- */
+
+.not-found {
+  display: grid;
+  justify-items: center;
+  padding-block: 2.5rem 1rem;
+  text-align: center;
+}
+
+.not-found img {
+  width: clamp(7rem, 30vw, 10rem);
+  margin-bottom: 1.25rem;
+}
+
+.not-found p {
+  max-width: 32rem;
+  color: var(--color-text-muted);
+}
+
+/* ----- Footer ----------------------------------------------------------- */
+
+.site-footer {
+  margin-top: 4rem;
+  padding-block: 2.5rem 2.75rem;
+  border-radius: 2.5rem 2.5rem 0 0;
+  background: var(--color-surface-soft);
+  text-align: center;
+}
+
+.footer-slogan {
+  font-size: 1.15rem;
+  font-weight: 850;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.25rem 1rem;
+  margin: 0 0 0.75rem;
+  padding: 0;
+  list-style: none;
+}
+
+.footer-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: 0.5rem;
+  font-weight: 750;
+}
+
+.copyright {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+/* ----- Motion: only for people who haven't asked for less --------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  .game-card,
+  .button {
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  .game-card:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      0 2px 4px rgb(var(--shadow-rgb) / var(--shadow-alpha)),
+      0 14px 32px rgb(var(--shadow-rgb) / calc(var(--shadow-alpha) * 1.4));
+  }
+
+  .button:hover {
+    transform: translateY(-2px);
+  }
+
+  .float {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+}
+
+/* ----- High contrast mode (Windows) ------------------------------------- */
+
+@media (forced-colors: active) {
+  .badge,
+  .chip,
+  .button,
+  .game-card {
+    border: 1px solid CanvasText;
+  }
+
+  .filter-input:checked + .filter-pill {
+    outline: 3px solid Highlight;
+  }
+}

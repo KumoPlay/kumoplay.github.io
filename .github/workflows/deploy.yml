@@ -1,0 +1,47 @@
+name: Deploy to GitHub Pages
+
+on:
+  # Every push to main publishes the site.
+  push:
+    branches: [main]
+
+  # Adds a "Run workflow" button in the Actions tab.
+  workflow_dispatch:
+
+  # Rebuild once a day, so "New" badges disappear after 30 days and
+  # games with a future release date go live on that day, without anyone pushing.
+  schedule:
+    - cron: "17 0 * * *" # every day at 00:17 UTC
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Only one deployment at a time; a newer run waits for the current one to finish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v7
+
+      - name: Install, build and upload the site
+        uses: withastro/action@v6
+        with:
+          node-version: 24
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

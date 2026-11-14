@@ -1,0 +1,76 @@
+---
+/**
+ * All playable games, with an All / Quick / Endless filter.
+ * The filter is plain radio buttons plus CSS (see .filterable in global.css), so it needs no JavaScript.
+ */
+import { PLAY_STYLES, type PlayStyle } from '../lib/game-options';
+import { useTranslations, type Lang } from '../i18n';
+import type { Game } from '../lib/games';
+import GameCard from './GameCard.astro';
+
+interface Props {
+  games: Game[];
+  lang: Lang;
+}
+
+const { games, lang } = Astro.props;
+const t = useTranslations(lang);
+
+type Filter = 'all' | PlayStyle;
+const filters: Filter[] = ['all', ...PLAY_STYLES];
+const count = (filter: Filter) =>
+  filter === 'all' ? games.length : games.filter((game) => game.data.playStyle === filter).length;
+const emptyMessage: Record<PlayStyle, string> = {
+  quick: t('filter.emptyQuick'),
+  endless: t('filter.emptyEndless'),
+};
+---
+
+<section class="section container" id="all-games" aria-labelledby="all-games-title">
+  <div class="section-head">
+    <h2 id="all-games-title">{t('home.allTitle')}</h2>
+    <p>{t('home.allIntro')}</p>
+  </div>
+
+  {
+    games.length === 0 ? (
+      <p class="empty-note">{t('home.noGames')}</p>
+    ) : (
+      <div class="filterable">
+        <fieldset class="filters">
+          <legend class="visually-hidden">{t('filter.legend')}</legend>
+          {filters.map((filter) => (
+            <>
+              <input
+                class="filter-input"
+                type="radio"
+                name="play-style"
+                id={`filter-${filter}`}
+                value={filter}
+                checked={filter === 'all'}
+              />
+              <label class="filter-pill" for={`filter-${filter}`}>
+                {t(`filter.${filter}`)} <span class="filter-count">({count(filter)})</span>
+              </label>
+            </>
+          ))}
+        </fieldset>
+        <p class="filter-help">{t('filter.help')}</p>
+
+        <ul class="game-grid" role="list">
+          {games.map((game) => (
+            <li data-style={game.data.playStyle}>
+              <GameCard game={game} lang={lang} />
+            </li>
+          ))}
+        </ul>
+
+        {PLAY_STYLES.filter((style) => count(style) === 0).map((style) => (
+          <p class="filter-empty" data-for={style}>
+            {emptyMessage[style]}
+          </p>
+        ))}
+      </div>
+    )
+  }
+</section>

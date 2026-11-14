@@ -1,0 +1,25 @@
+---
+import { localizePath, useTranslations, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <p class="footer-slogan">{t('site.slogan')}</p>
+    <nav aria-label={t('footer.links')}>
+      <ul class="footer-links">
+        <li><a href={localizePath('/about/', lang)}>{t('nav.about')}</a></li>
+        <li><a href="/rss.xml">{t('footer.rss')}</a></li>
+        <li><a href="https://github.com/KumoPlay">{t('footer.github')}</a></li>
+      </ul>
+    </nav>
+    <p class="copyright">{t('footer.copyright', { year })}</p>
+  </div>
+</footer>

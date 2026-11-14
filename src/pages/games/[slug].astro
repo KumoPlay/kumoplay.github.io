@@ -1,0 +1,211 @@
+---
+/**
+ * One page per game: /games/<slug>/
+ */
+import { getImage, Picture } from 'astro:assets';
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import { formatDate, getLangFromUrl, localizePath, useTranslations } from '../../i18n';
+import { getAllGames, isNew, isPlayable, type Game } from '../../lib/games';
+
+export async function getStaticPaths() {
+  const games = await getAllGames();
+  return games.map((game) => ({ params: { slug: game.data.slug }, props: { game } }));
+}
+
+interface Props {
+  game: Game;
+}
+
+const { game } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const {
+  title,
+  tagline,
+  description,
+  cover,
+  coverAlt,
+  screenshots,
+  playStyle,
+  sessionLength,
+  platforms,
+  playUrl,
+  sourceUrl,
+  releaseDate,
+  tags,
+} = game.data;
+
+const playable = isPlayable(game);
+const fresh = isNew(game);
+const { Content } = await render(game);
+const hasBody = Boolean(game.body?.trim());
+
+// Share card: the cover, cropped to 1200 × 630 and saved as JPEG so every app can show it.
+const shareImage = await getImage({ src: cover, width: 1200, height: 630, format: 'jpg', quality: 85 });
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+
+/** Screenshots are shown at a fixed height; work out their display width for the right image size. */
+const SHOT_HEIGHT = 416;
+const shots = screenshots.map((shot) => {
+  const displayWidth = Math.round((SHOT_HEIGHT * shot.src.width) / shot.src.height);
+  return {
+    ...shot,
+    widths: [displayWidth, displayWidth * 2].filter((w) => w <= shot.src.width),
+    sizes: `${displayWidth}px`,
+  };
+});
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'VideoGame',
+  name: title,
+  description,
+  url: pageUrl,
+  image: new URL(shareImage.src, Astro.site).href,
+  gamePlatform: platforms.map((platform) => t(`platform.${platform}`)),
+  ...(tags.length > 0 && { keywords: tags.join(', ') }),
+  ...(playable && releaseDate && { datePublished: releaseDate.toISOString().slice(0, 10) }),
+  ...(sourceUrl && { codeRepository: sourceUrl }),
+  publisher: { '@type': 'Organization', name: t('site.name'), url: Astro.site?.href },
+};
+---
+
+<BaseLayout
+  title={t('game.pageTitle', { title, tagline: tagline.replace(/\.$/, '') })}
+  description={description}
+  image={{ src: shareImage.src, width: 1200, height: 630, alt: coverAlt }}
+  jsonLd={jsonLd}
+>
+  <article class="container game-page">
+    <a class="back-link" href={`${localizePath('/', lang)}#all-games`}>
+      <Icon name="arrow-left" />
+      {t('game.back')}
+    </a>
+
+    <div class="game-hero">
+      <div class="game-cover">
+        <Picture
+          src={cover}
+          alt={coverAlt}
+          formats={['avif', 'webp']}
+          widths={[640, 960, 1280, 1600, 2400].filter((w) => w <= cover.width)}
+          sizes="(min-width: 72rem) 38rem, (min-width: 56rem) 52vw, 100vw"
+          priority
+        />
+      </div>
+
+      <div class="game-intro">
+        {
+          (fresh || !playable) && (
+            <p class="card-badges">
+              {fresh && <span class="badge">{t('badge.new')}</span>}
+              {!playable && <span class="badge badge-soon">{t('badge.comingSoon')}</span>}
+            </p>
+          )
+        }
+        <h1>{title}</h1>
+        <p class="game-tagline">{tagline}</p>
+
+        {
+          playable && playUrl ? (
+            <a class="button button-primary button-play" href={playUrl}>
+              <Icon name="play" />
+              {t('game.play')}
+            </a>
+          ) : (
+            <p class="soon-box">
+              <strong>{t('game.comingSoon')}</strong>
+              <span>{t('game.comingSoonNote')}</span>
+            </p>
+          )
+        }
+
+        <dl class="game-facts">
+          <div>
+            <dt>{t('game.playStyle')}</dt>
+            <dd>{t(`playStyle.${playStyle}`)}: {t(`playStyle.${playStyle}.hint`).toLowerCase()}</dd>
+          </div>
+          <div>
+            <dt>{t('game.session')}</dt>
+            <dd>{sessionLength}</dd>
+          </div>
+          <div>
+            <dt>{t('game.platforms')}</dt>
+            <dd>{platforms.map((platform) => t(`platform.${platform}`)).join(', ')}</dd>
+          </div>
+          {
+            releaseDate && (
+              <div>
+                <dt>{playable ? t('game.released') : t('game.expected')}</dt>
+                <dd>
+                  <time datetime={releaseDate.toISOString().slice(0, 10)}>{formatDate(releaseDate, lang)}</time>
+                </dd>
+              </div>
+            )
+          }
+        </dl>
+      </div>
+    </div>
+
+    <section class="game-section" aria-labelledby="about-game">
+      <h2 id="about-game">{t('game.about')}</h2>
+      <p>{description}</p>
+      {
+        hasBody && (
+          <div class="prose">
+            <Content />
+          </div>
+        )
+      }
+    </section>
+
+    {
+      shots.length > 0 && (
+        <div class="game-section">
+          <h2 id="screenshots-title">{t('game.screenshots')}</h2>
+          {/* Focusable so keyboard users can scroll the strip with the arrow keys. */}
+          <section aria-labelledby="screenshots-title" tabindex="0">
+            <ul class="screenshots" role="list">
+              {shots.map((shot) => (
+                <li>
+                  <Picture
+                    src={shot.src}
+                    alt={shot.alt}
+                    formats={['avif', 'webp']}
+                    widths={shot.widths}
+                    sizes={shot.sizes}
+                    loading="lazy"
+                  />
+                </li>
+              ))}
+            </ul>
+          </section>
+        </div>
+      )
+    }
+
+    {
+      (tags.length > 0 || sourceUrl) && (
+        <div class="game-section">
+          {tags.length > 0 && (
+            <ul class="tag-list">
+              {tags.map((tag) => (
+                <li class="chip">#{tag}</li>
+              ))}
+            </ul>
+          )}
+          {sourceUrl && (
+            <p>
+              <a class="source-link" href={sourceUrl}>
+                <Icon name="code" />
+                {t('game.source')}
+              </a>
+            </p>
+          )}
+        </div>
+      )
+    }
+  </article>
+</BaseLayout>
