@@ -17,7 +17,8 @@ sessionLength: 1–3 min
 platforms: [web]
 playUrl: https://kumoplay.github.io/kumo-farm/
 sourceUrl: https://github.com/KumoPlay/kumo-farm
-status: coming-soon
+status: live
+releaseDate: 2026-11-18
 tags: [cozy, farming, relaxing]
 ---
 
