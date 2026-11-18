@@ -17,7 +17,8 @@ sessionLength: 1–2 min
 platforms: [web]
 playUrl: https://kumoplay.github.io/kumo-cafe/
 sourceUrl: https://github.com/KumoPlay/kumo-cafe
-status: coming-soon
+status: live
+releaseDate: 2026-11-19
 tags: [cozy, cooking, relaxing]
 ---
 
