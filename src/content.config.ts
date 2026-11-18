@@ -22,7 +22,7 @@ const games = defineCollection({
 
         /** Web address name: lowercase letters, numbers and dashes. Must match the file name. */
         slug: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
-          error: 'Use only lowercase letters, numbers and dashes, for example "cloud-hop".',
+          error: 'Use only lowercase letters, numbers and dashes, for example "kumo-farm".',
         }),
 
         /** One short line shown under the title on cards. */

@@ -137,5 +137,3 @@ After the game is live, paste its link into a share-preview checker such as the 
 ## Removing or retiring a game
 
 Delete its `.md` file and its image folder, then push. Its page disappears and links to it show the cozy 404 page.
-
-The three example games (**Cloud Hop**, **Petal Match**, **Moon Garden**) use placeholder images. Delete them before you announce the site.
