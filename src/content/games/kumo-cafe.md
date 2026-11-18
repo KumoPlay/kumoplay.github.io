@@ -18,7 +18,7 @@ platforms: [web]
 playUrl: https://kumoplay.github.io/kumo-cafe/
 sourceUrl: https://github.com/KumoPlay/kumo-cafe
 status: live
-releaseDate: 2026-11-19
+releaseDate: 2026-11-18
 tags: [cozy, cooking, relaxing]
 ---
 
