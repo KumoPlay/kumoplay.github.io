@@ -17,7 +17,8 @@ sessionLength: 2–3 min
 platforms: [web]
 playUrl: https://kumoplay.github.io/peek-a-kumo/
 sourceUrl: https://github.com/KumoPlay/peek-a-kumo
-status: coming-soon
+status: live
+releaseDate: 2026-11-21
 tags: [cozy, hidden-object, relaxing]
 ---
 
