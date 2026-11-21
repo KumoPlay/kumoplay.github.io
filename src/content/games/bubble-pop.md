@@ -17,7 +17,8 @@ sessionLength: 10 sec–10 min
 platforms: [web]
 playUrl: https://kumoplay.github.io/bubble-pop/
 sourceUrl: https://github.com/KumoPlay/bubble-pop
-status: coming-soon
+status: live
+releaseDate: 2026-11-21
 tags: [cozy, relaxing, fidget]
 ---
 

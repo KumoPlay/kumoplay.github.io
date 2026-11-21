@@ -14,8 +14,8 @@ Built with [Astro](https://astro.build) as a static site and published to GitHub
 | --- | --- | --- | --- |
 | [Kumo Farm](https://kumoplay.github.io/games/kumo-farm/): a cozy little farm on a floating cloud island | 2026-11-18 | [Play](https://kumoplay.github.io/kumo-farm/) | [KumoPlay/kumo-farm](https://github.com/KumoPlay/kumo-farm) |
 | [Kumo Café](https://kumoplay.github.io/games/kumo-cafe/): cook and serve breakfast at a cozy café in the clouds | 2026-11-18 | [Play](https://kumoplay.github.io/kumo-cafe/) | [KumoPlay/kumo-cafe](https://github.com/KumoPlay/kumo-cafe) |
-| [Peek-a-Kumo](https://kumoplay.github.io/games/peek-a-kumo/): a cozy hidden-object game in a little town on the clouds (newest) | 2026-11-21 | [Play](https://kumoplay.github.io/peek-a-kumo/) | [KumoPlay/peek-a-kumo](https://github.com/KumoPlay/peek-a-kumo) |
-| [Bubble Pop](https://kumoplay.github.io/games/bubble-pop/): a cozy pocket fidget toy: pop bubble wrap, blow soap bubbles, squish a cloud (coming soon) | Coming soon | [Play](https://kumoplay.github.io/bubble-pop/) | [KumoPlay/bubble-pop](https://github.com/KumoPlay/bubble-pop) |
+| [Peek-a-Kumo](https://kumoplay.github.io/games/peek-a-kumo/): a cozy hidden-object game in a little town on the clouds | 2026-11-21 | [Play](https://kumoplay.github.io/peek-a-kumo/) | [KumoPlay/peek-a-kumo](https://github.com/KumoPlay/peek-a-kumo) |
+| [Bubble Pop](https://kumoplay.github.io/games/bubble-pop/): a cozy pocket fidget toy: pop bubble wrap, blow soap bubbles, squish a cloud (newest) | 2026-11-21 | [Play](https://kumoplay.github.io/bubble-pop/) | [KumoPlay/bubble-pop](https://github.com/KumoPlay/bubble-pop) |
 
 Each game lives in its own repository and is published at `kumoplay.github.io/<slug>/`. This site lists them from the files in `src/content/games/`, so this table is only a quick overview. Add a row here when you add a game.
 
