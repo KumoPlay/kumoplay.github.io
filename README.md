@@ -8,6 +8,16 @@ Built with [Astro](https://astro.build) as a static site and published to GitHub
 
 > **Adding a game?** Follow [ADDING_A_GAME.md](ADDING_A_GAME.md). It's one Markdown file and one cover image.
 
+## Games on the site
+
+| Game | Released | Play | Code |
+| --- | --- | --- | --- |
+| [Kumo Farm](https://kumoplay.github.io/games/kumo-farm/): a cozy little farm on a floating cloud island | 2026-11-18 | [Play](https://kumoplay.github.io/kumo-farm/) | [KumoPlay/kumo-farm](https://github.com/KumoPlay/kumo-farm) |
+| [Kumo Café](https://kumoplay.github.io/games/kumo-cafe/): cook and serve breakfast at a cozy café in the clouds | 2026-11-18 | [Play](https://kumoplay.github.io/kumo-cafe/) | [KumoPlay/kumo-cafe](https://github.com/KumoPlay/kumo-cafe) |
+| [Peek-a-Kumo](https://kumoplay.github.io/games/peek-a-kumo/): a cozy hidden-object game in a little town on the clouds (newest) | 2026-11-21 | [Play](https://kumoplay.github.io/peek-a-kumo/) | [KumoPlay/peek-a-kumo](https://github.com/KumoPlay/peek-a-kumo) |
+
+Each game lives in its own repository and is published at `kumoplay.github.io/<slug>/`. This site lists them from the files in `src/content/games/`, so this table is only a quick overview. Add a row here when you add a game.
+
 ## Run it on your computer
 
 You need **Node.js 22.23 or newer** (Node 24 recommended). With [nvm](https://github.com/nvm-sh/nvm), `nvm use` picks the right version from `.nvmrc`.
